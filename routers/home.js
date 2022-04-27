@@ -12,13 +12,16 @@ const inforModule = require('../models/info')
 const topModule = require('../models/top')
 const emailModule = require('../models/email')
 
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
+
 //================================================
 //Thồn tin chung
 router.post('/infor', middlewareCntroller.verifyToken, async (req, res) => {
 
     const { Logo, IconPhone, PhoneNumber, IconInfor, Infor, IconEmail, Email, IconAddress, Address, IconTime, Time, Facebook } = req.body
 
-    if (!Logo || !IconPhone || !PhoneNumber || !IconInfor || !Infor || !IconEmail || !Email || !IconAddress || !Address || !IconTime || !Time ||!Facebook) {
+    if (!Logo || !IconPhone || !PhoneNumber || !IconInfor || !Infor || !IconEmail || !Email || !IconAddress || !Address || !IconTime || !Time || !Facebook) {
         return res.status(402).json({ success: false, message: 'Vui lòng nhận đủ các trường trước khi đăng' })
     }
 
@@ -45,18 +48,18 @@ router.get('/infor', async (req, res) => {
 //put
 router.put('/infor', middlewareCntroller.verifyToken, async (req, res) => {
 
-    const { Logo, IconPhone, PhoneNumber, IconInfor, Infor, IconEmail, Email, IconAddress, Address, IconTime, Time,Facebook, id } = req.body
+    const { Logo, IconPhone, PhoneNumber, IconInfor, Infor, IconEmail, Email, IconAddress, Address, IconTime, Time, Facebook, id } = req.body
 
     if (!Logo || !IconPhone || !PhoneNumber || !IconInfor || !Infor || !IconEmail || !Email || !IconAddress || !Address || !IconTime || !Time || !Facebook) {
         return res.status(402).json({ success: false, message: 'Vui lòng nhận đủ các trường trước khi đăng' })
     }
 
     try {
-        const data = await inforModule.findByIdAndUpdate({_id: id},{Logo, IconPhone, PhoneNumber, IconInfor, Infor, IconEmail, Email, IconAddress, Address, IconTime, Time, Facebook})
+        const data = await inforModule.findByIdAndUpdate({ _id: id }, { Logo, IconPhone, PhoneNumber, IconInfor, Infor, IconEmail, Email, IconAddress, Address, IconTime, Time, Facebook })
 
         return res.status(200).json({ success: true, message: 'Created successfully' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error '+error })
+        return res.status(500).json({ success: false, message: 'Server Error ' + error })
     }
 })
 
@@ -122,16 +125,16 @@ router.delete('/service/:id', async (req, res) => {
     }
 })
 
-router.put('/service/:id', async (req, res)=> {
+router.put('/service/:id', async (req, res) => {
     const id = req.params.id
     const { Icon, Title, Content } = req.body
 
     try {
-        const data = await postServiceModel.findByIdAndUpdate({_id: id}, {Icon, Title, Content })
+        const data = await postServiceModel.findByIdAndUpdate({ _id: id }, { Icon, Title, Content })
 
         return res.status(200).json({ success: true, message: 'Thành Công' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error' +error})
+        return res.status(500).json({ success: false, message: 'Server Error' + error })
     }
 })
 
@@ -193,16 +196,16 @@ router.delete('/about/:id', async (req, res) => {
     }
 })
 
-router.put('/about/:id', async (req, res)=> {
+router.put('/about/:id', async (req, res) => {
     const id = req.params.id
     const { Icon, Title1, Title2, Content } = req.body
 
     try {
-        const data = await aboutModule.findByIdAndUpdate({_id: id}, {Icon, Title1, Title2, Content })
+        const data = await aboutModule.findByIdAndUpdate({ _id: id }, { Icon, Title1, Title2, Content })
 
         return res.status(200).json({ success: true, message: 'Thành Công' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error' +error})
+        return res.status(500).json({ success: false, message: 'Server Error' + error })
     }
 })
 
@@ -264,16 +267,16 @@ router.delete('/blog/:id', async (req, res) => {
     }
 })
 
-router.put('/blog/:id', async (req, res)=> {
+router.put('/blog/:id', async (req, res) => {
     const id = req.params.id
     const { Icon, Title1, Title2, Content } = req.body
 
     try {
-        const data = await blogModule.findByIdAndUpdate({_id: id}, {Icon, Title1, Title2, Content })
+        const data = await blogModule.findByIdAndUpdate({ _id: id }, { Icon, Title1, Title2, Content })
 
         return res.status(200).json({ success: true, message: 'Thành Công' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error' +error})
+        return res.status(500).json({ success: false, message: 'Server Error' + error })
     }
 })
 //================================================
@@ -302,16 +305,16 @@ router.get('/question/:id', async (req, res) => {
     }
 })
 
-router.put('/question/:id', async (req, res)=> {
+router.put('/question/:id', async (req, res) => {
     const id = req.params.id
     const { Title, Content } = req.body
 
     try {
-        const data = await questionModule.findByIdAndUpdate({_id: id}, {Title, Content })
+        const data = await questionModule.findByIdAndUpdate({ _id: id }, { Title, Content })
 
         return res.status(200).json({ success: true, message: 'Thành Công' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error' +error})
+        return res.status(500).json({ success: false, message: 'Server Error' + error })
     }
 })
 
@@ -407,30 +410,30 @@ router.get('/nof/:id', async (req, res) => {
     }
 })
 
-router.put('/nof/:id', async (req, res)=> {
+router.put('/nof/:id', async (req, res) => {
     const id = req.params.id
     const { Icon, Title1, Title2, Content } = req.body
 
     try {
-        const data = await nofModule.findByIdAndUpdate({_id: id}, {Icon, Title1, Title2, Content })
+        const data = await nofModule.findByIdAndUpdate({ _id: id }, { Icon, Title1, Title2, Content })
 
         return res.status(200).json({ success: true, message: 'Thành Công' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error' +error})
+        return res.status(500).json({ success: false, message: 'Server Error' + error })
     }
 })
 
 //================================================
 //Email
 router.post('/email', middlewareCntroller.verifyToken, async (req, res) => {
-    const {Icon, Content } = req.body
+    const { Icon, Content } = req.body
 
     if (!Content) {
         return res.status(402).json({ success: false, message: 'Vui lòng nhận đủ các trường trước khi đăng' })
     }
 
     try {
-        const data = await emailModule({Icon, Content })
+        const data = await emailModule({ Icon, Content })
         await data.save()
 
         return res.status(200).json({ success: true, message: 'Created successfully' })
@@ -462,20 +465,20 @@ router.get('/email/:id', async (req, res) => {
     }
 })
 
-router.put('/email/:id', async (req, res)=> {
+router.put('/email/:id', async (req, res) => {
     const id = req.params.id
-    const {Icon, Content } = req.body
+    const { Icon, Content } = req.body
 
-    if(!Content) {
+    if (!Content) {
         return res.status(401).json({ success: false, message: 'Vui Lòng điền đầy đủ thông tin' })
     }
 
     try {
-        const data = await emailModule.findByIdAndUpdate({_id: id}, {Icon, Content })
+        const data = await emailModule.findByIdAndUpdate({ _id: id }, { Icon, Content })
 
         return res.status(200).json({ success: true, message: 'Thành Công' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error' +error})
+        return res.status(500).json({ success: false, message: 'Server Error' + error })
     }
 })
 
@@ -489,7 +492,7 @@ router.post('/top', middlewareCntroller.verifyToken, async (req, res) => {
     }
 
     try {
-        const data = await topModule({ Icon,  Content })
+        const data = await topModule({ Icon, Content })
         await data.save()
 
         return res.status(200).json({ success: true, message: 'Created successfully' })
@@ -521,17 +524,60 @@ router.get('/top/:id', async (req, res) => {
     }
 })
 
-router.put('/top/:id', async (req, res)=> {
+router.put('/top/:id', async (req, res) => {
     const id = req.params.id
     const { Icon, Content } = req.body
 
     try {
-        const data = await topModule.findByIdAndUpdate({_id: id}, {Icon, Content })
+        const data = await topModule.findByIdAndUpdate({ _id: id }, { Icon, Content })
 
         return res.status(200).json({ success: true, message: 'Thành Công' })
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Server Error' +error})
+        return res.status(500).json({ success: false, message: 'Server Error' + error })
     }
+})
+
+//================================================
+router.post('/send-email', async (req, res) => {
+    const { Name, emailNhan, PhoneNumber, Title, Content } = req.body
+
+    if (!Name || !emailNhan || !PhoneNumber || !Title || !Content) {
+        return res.status(401).json({ message: 'vui lòng điền đầy đủ', success: false })
+    } else {
+        const msg = {
+            to: 'linhnguyen.vfin@gmail.com',
+            from: 'linhnguyen.wisekeylaw@gmail.com', // Use the email address or domain you verified above
+            subject: 'Email Tư vấn ' + Title,
+            text: 'and easy to do anywhere, even with Node.js',
+            html: `<h1>Email Nhận tư vấn: ${emailNhan}</h1><p>Số Điện Thoại: ${PhoneNumber}</p><p>Tên: ${Name}</p><p>Nội Dung: ${Content}</p>`,
+        };
+        //ES6
+        sgMail
+            .send(msg)
+            .then(() => { }, error => {
+                console.error(error);
+
+                if (error.response) {
+                    console.error(error.response.body)
+                }
+            });
+        //ES8
+        (async () => {
+            try {
+                await sgMail.send(msg);
+                res.status(200).json({ message: 'send Success', success: true })
+            } catch (error) {
+                console.error(error);
+                res.status(401).json({ message: 'send fall' })
+                if (error.response) {
+                    console.error(error.response.body)
+                }
+                res.status(200).json({ message: 'lỗi server', success: false })
+            }
+        })();
+    }
+
+
 })
 
 module.exports = router
